@@ -1,0 +1,8 @@
+right arrow(A) - acceleration
+left arrow(B) - boost
+W(UP) - move up
+S(DOWN) - Move down
+A(LEFT) - lean left
+D(RIGHT) - Lean right
+enter(Select option/pause game) - start
+apostrophe(Cycle through options) - select
