@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MP_Boost : MonoBehaviour {
 
+    //works exactly like the script MP_Acceleration
     float speed;
     bool boosting;
     GameObject floor;
@@ -24,7 +25,8 @@ public class MP_Boost : MonoBehaviour {
     {
         print("Boost");
         boosting = true;
-        floor.transform.Translate(Vector2.left * (speed += (Time.deltaTime * 2)));
+        //the only difference other than the stopped/boosting bool is this, it leaves Time.deltaTime normal, can be increased by multiplying Time.deltaTime;
+        floor.transform.Translate(Vector2.left * (speed += (Time.deltaTime)));
 
         if(speed > maxSpeed)
         {
