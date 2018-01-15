@@ -13,7 +13,7 @@ public class MP_Controls : MonoBehaviour {
 	void Update () {
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            print("A button pressed");
+            //print("A button pressed");
             //these are written out because I was experiencing weird NullReferenceExcpetions when I made shortcuts
             gameObject.GetComponent<MP_Acceleration>().Accelerate();
         }
@@ -24,7 +24,7 @@ public class MP_Controls : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            print("B button pressed");
+            //print("B button pressed");
             gameObject.GetComponent<MP_Boost>().Boost();
         }
         else
@@ -32,21 +32,21 @@ public class MP_Controls : MonoBehaviour {
             gameObject.GetComponent<MP_Boost>().StopBoost();
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
         {
-            print("UP Directional pressed");
+            //print("UP Directional pressed");
             gameObject.GetComponent<MP_ChangeLanes>().MoveUp();
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKey(KeyCode.S))
         {
-            print("DOWN Directional pressed");
+            //print("DOWN Directional pressed");
             gameObject.GetComponent<MP_ChangeLanes>().MoveDown();
         }
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))
         {
-            print("LEFT Directional pressed");
+           // print("LEFT Directional pressed");
             gameObject.GetComponent<MP_GroundControl>().IncreaseRot();
         }
         else
@@ -56,17 +56,17 @@ public class MP_Controls : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.D))
         {
-            print("RIGHT Directional pressed");
+           // print("RIGHT Directional pressed");
         }
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            print("START button pressed");
+           // print("START button pressed");
         }
 
         if (Input.GetKeyDown(KeyCode.Quote))
         {
-            print("SELECT button pressed");
+           // print("SELECT button pressed");
         }
     }
 

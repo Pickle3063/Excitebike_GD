@@ -23,7 +23,7 @@ public class MP_Acceleration : MP_Controls {
     //controls acceleration, is called in the controls script
     public void Accelerate()
     {
-        print("Accelerate");
+        //print("Accelerate");
         //tells the script the player is no longer stopped
         stopped = false;
         //this moves the floor to the left, multiplied by speed which is constantly increased while button is held

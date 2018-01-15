@@ -11,13 +11,11 @@ public class MP_ChangeLanes : MonoBehaviour {
         ONE,//bottom lane
         TWO,//second lane up
         THREE,//third lane up
-        FOUR,//fourth lane up
-
-        NUM_STATES
+        FOUR//fourth lane up
     }
 
     //sets current state as lane three(second from the top)
-    LaneStates curState = LaneStates.THREE;
+    [SerializeField] LaneStates curState = LaneStates.ONE;
     Dictionary<LaneStates, Action> fsm = new Dictionary<LaneStates, Action>();
 
     //the heights of the four different lanes
@@ -28,6 +26,10 @@ public class MP_ChangeLanes : MonoBehaviour {
     //used to change the player's height(changing lanes)
     Vector3 curPos;
 
+    //stops the state change from being called back to back
+    float timer = 0.2f;
+    float timePassed;
+
 	// Use this for initialization
 	void Start () {
         //adding the four states to the dictionary
@@ -35,9 +37,10 @@ public class MP_ChangeLanes : MonoBehaviour {
         fsm.Add(LaneStates.TWO, new Action(StateTwo));
         fsm.Add(LaneStates.THREE, new Action(StateThree));
         fsm.Add(LaneStates.FOUR, new Action(StateFour));
-        SetState(LaneStates.THREE);
+        SetState(LaneStates.ONE);
 
         curPos = transform.position;
+
         
     }
 
@@ -48,20 +51,21 @@ public class MP_ChangeLanes : MonoBehaviour {
         //sets the current position every frame
         transform.SetPositionAndRotation(curPos, transform.rotation);
 
+        //timer
+        timePassed += Time.deltaTime;
     }
 
     //called in controls, moves the player up a lane
     public void MoveUp()
     {
         //prevents lane from going above four
-        if(curState == LaneStates.FOUR)
-        {
-            curState = LaneStates.FOUR;
-        }
-        else
         //moves lane up one
-        { 
+        if(curState != LaneStates.FOUR && timePassed > timer)
+        {
+            //resetting timer then switching states
+            timePassed = 0;
             curState++;
+            
         }
         
     }
@@ -69,16 +73,14 @@ public class MP_ChangeLanes : MonoBehaviour {
     public void MoveDown()
     {
         //prevents lane from going below one
-       if(curState == LaneStates.ONE)
+        //moves lane down one
+       if(curState != LaneStates.ONE && timePassed > timer)
         {
-            curState = LaneStates.ONE;
-        }
-       //moves lane down one
-       else
-        {
+            //resetting timer then switching states
+            timePassed = 0;
             curState--;
+            
         }
-        
     }
 
     //sets the height for each lane
@@ -91,19 +93,19 @@ public class MP_ChangeLanes : MonoBehaviour {
     void StateTwo()
     {
         curPos = new Vector3(-32.984f, heightTwo, -2);
-        
+       
     }
     
     void StateThree()
     {
         curPos = new Vector3(-32.984f, heightThree, -2);
-        
+      
     }
 
     void StateFour()
     {
         curPos = new Vector3(-32.984f, heightFour, -2);
-        
+      
     }
    
     void SetState(LaneStates newState)

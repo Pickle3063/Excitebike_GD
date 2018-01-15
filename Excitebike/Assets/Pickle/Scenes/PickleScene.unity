@@ -248,6 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b631ab17f23d9aa4eb0638ff62fb0bc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curState: 0
 --- !u!114 &360737173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,6 +271,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a71f9bd1e5569e54faf5b971f1aff61f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Speed: 1
+  curZRot: 0
 --- !u!1 &859826413
 GameObject:
   m_ObjectHideFlags: 0

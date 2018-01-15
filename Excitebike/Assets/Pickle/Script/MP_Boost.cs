@@ -48,7 +48,7 @@ public class MP_Boost : MonoBehaviour {
 
     public void Boost()
     {
-        print("Boost");
+        //print("Boost");
         boosting = true;
         //the only difference other than the stopped/boosting bool is this, it leaves Time.deltaTime normal, can be increased by multiplying Time.deltaTime;
         floor.transform.Translate(Vector2.left * (speed += (Time.deltaTime)));
