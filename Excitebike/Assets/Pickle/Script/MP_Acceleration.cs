@@ -27,7 +27,7 @@ public class MP_Acceleration : MP_Controls {
         //tells the script the player is no longer stopped
         stopped = false;
         //this moves the floor to the left, multiplied by speed which is constantly increased while button is held
-        floor.transform.Translate(Vector2.left * (speed += (Time.deltaTime * .5f)));
+        floor.transform.Translate(Vector2.left * (speed += (Time.deltaTime * .1f)));
         //prevents speed from going too high
         if(speed > maxSpeed)
         {
@@ -43,7 +43,7 @@ public class MP_Acceleration : MP_Controls {
         if (!stopped)
         {
             //slows the rate at which the floor is moved but still moves the floor to simulate deceleration
-            floor.transform.Translate(Vector2.left * (speed -= (Time.deltaTime * .5f)));
+            floor.transform.Translate(Vector2.left * (speed -= (Time.deltaTime * .1f)));
             //prevents speed from going negative
             if (speed < minSpeed)
             {
