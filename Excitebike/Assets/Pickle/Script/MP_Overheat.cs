@@ -29,11 +29,11 @@ public class MP_Overheat : MonoBehaviour {
         isOverheated = !isOverheated;
         if (isOverheated)
         {
-            LaneSwitch.ChangeNeedTopLane();
+            //LaneSwitch.ChangeNeedTopLane();
         }
         else
         {
-            LaneSwitch.ChangeNeedTopLane();
+            //LaneSwitch.ChangeNeedTopLane();
         }
     }
 
