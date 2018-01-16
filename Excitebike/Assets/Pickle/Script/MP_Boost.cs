@@ -11,8 +11,12 @@ public class MP_Boost : MonoBehaviour {
     [SerializeField] float maxSpeed;
     float minSpeed = 0;
 
-	// Use this for initialization
-	void Start () {
+    private float bar = 0.0F;
+    private float bar_tofill = 30.0F;  //# of seconds it takes to fill bar
+    private float bar_usage = 10.0F;   //No of seconds it can be used for
+
+    // Use this for initialization
+    void Start () {
         floor = GameObject.Find("floor");
 	}
 	
@@ -20,6 +24,32 @@ public class MP_Boost : MonoBehaviour {
 	void Update () {
 		
 	}
+
+     void FixedUpdate()
+    {
+
+        if (boosting)
+        {
+            bar -= (1F / bar_usage) * Time.deltaTime;
+            if (bar <= 0)
+            {
+                boosting = false;
+                bar = 0;
+                speed = minSpeed;
+                print("out of gas");
+                gameObject.GetComponent<MP_ChangeLanes>().MoveUp();
+                //reset your speed here to what it was before
+
+            }
+
+        }
+        else if (bar < 1)
+        {
+            bar += (1F / bar_tofill) * Time.deltaTime;
+
+        }
+
+    }
 
     public void Boost()
     {
