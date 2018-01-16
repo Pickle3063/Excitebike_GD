@@ -13,10 +13,12 @@ public class MP_ChangeLanes : MonoBehaviour {
         THREE,//third lane up
         FOUR,//fourth lane up
         RECLANE//where the player goes after crashing or overheating
+        
     }
 
     //sets current state as lane three(second from the top)
     [SerializeField] LaneStates curState = LaneStates.ONE;
+    [SerializeField] LaneStates prevState;
     Dictionary<LaneStates, Action> fsm = new Dictionary<LaneStates, Action>();
 
     //the heights of the four different lanes
@@ -25,6 +27,9 @@ public class MP_ChangeLanes : MonoBehaviour {
     [SerializeField] float heightThree = 0.6f;
     [SerializeField] float heightFour = 1.6f;
     [SerializeField] float heightRec = 2.6f;
+    float curHeight;
+    
+    
 
     //speed at which the player changes lanes
     [SerializeField] float speed;
@@ -41,11 +46,14 @@ public class MP_ChangeLanes : MonoBehaviour {
     //checks if the player needs to go to the lane above four for overheating or crashing
     bool needTopLane = false;
 
+    bool isInPos;
+
     //accessing scripts
     MP_Crash Crashing;
     MP_Controls Controls;
     MP_Acceleration Accel;
     MP_GroundControl GroundCon;
+    MP_Boost BoostScript;
 
     // Use this for initialization
     void Start() {
@@ -55,6 +63,7 @@ public class MP_ChangeLanes : MonoBehaviour {
         fsm.Add(LaneStates.THREE, new Action(StateThree));
         fsm.Add(LaneStates.FOUR, new Action(StateFour));
         fsm.Add(LaneStates.RECLANE, new Action(StateRec));
+        
         SetState(LaneStates.ONE);
 
         curPos = transform.position;
@@ -63,16 +72,21 @@ public class MP_ChangeLanes : MonoBehaviour {
         Controls = GetComponent<MP_Controls>();
         Accel = GetComponent<MP_Acceleration>();
         GroundCon = GetComponent<MP_GroundControl>();
+        BoostScript = GetComponent<MP_Boost>();
     }
 
     // Update is called once per frame
     void Update() {
         //continues to call current state every frame
         fsm[curState].Invoke();
-        //sets the current position every frame
-        //transform.SetPositionAndRotation(curPos, transform.rotation);
+        if (!isInPos)
+        {
+            curPos = new Vector3(-32.984f, curHeight, -2);
+            //moves the player to the newest position every frame
+            transform.position = Vector3.Lerp(transform.position, curPos, speed * Time.deltaTime);
+            isInPos = true;
+        }
 
-        transform.position = Vector3.Lerp(transform.position, curPos, speed * Time.deltaTime);
 
         //timer
         timePassed += Time.deltaTime;
@@ -94,6 +108,11 @@ public class MP_ChangeLanes : MonoBehaviour {
             }
         }
         
+    }
+    
+    public void OverheatTime()
+    {
+        //crashTimer = BoostScript.
     }
 
     //used to set the timer to the crash time for a wheelie
@@ -123,9 +142,10 @@ public class MP_ChangeLanes : MonoBehaviour {
     //called in controls, moves the player up a lane
     public void MoveUp()
     {
+        
         //prevents lane from going above four
         //moves lane up one
-        if(curState != LaneStates.FOUR && timePassed > timer)
+        if (curState != LaneStates.FOUR && timePassed > timer)
         {
             //resetting timer then switching states
             timePassed = 0;
@@ -137,9 +157,10 @@ public class MP_ChangeLanes : MonoBehaviour {
 
     public void MoveDown()
     {
+        
         //prevents lane from going below one
         //moves lane down one
-       if(curState != LaneStates.ONE && timePassed > timer)
+        if (curState != LaneStates.ONE && timePassed > timer)
         {
             //resetting timer then switching states
             timePassed = 0;
@@ -151,36 +172,40 @@ public class MP_ChangeLanes : MonoBehaviour {
     //sets the height for each lane
     void StateOne()
     {
-        curPos = new Vector3(-32.984f, heightOne, -2);
-        
+        curHeight = heightOne;
+        isInPos = false;
     }
 
     void StateTwo()
     {
-        curPos = new Vector3(-32.984f, heightTwo, -2);
-       
+        curHeight = heightTwo;
+        isInPos = false;
     }
     
     void StateThree()
     {
-        curPos = new Vector3(-32.984f, heightThree, -2);
-      
+        curHeight = heightThree;
+        isInPos = false;
     }
 
     void StateFour()
     {
-        curPos = new Vector3(-32.984f, heightFour, -2);
-      
+        curHeight = heightFour;
+        isInPos = false;
     }
 
     void StateRec()
     {
-        curPos = new Vector3(-32.984f, heightRec, -2);
+        curHeight = heightRec;
 
         //insert if check for overheating
         /*if(isOverheating){
          * if(!overheating{
+         * timepassed = 0;
+         * crashing.changeiscrashed();
          * curState = LaneStates.FOUR;
+         * controls.enabled = true;
+         * accel.enabled = true;
          * }
          * }
          */
@@ -199,9 +224,9 @@ public class MP_ChangeLanes : MonoBehaviour {
             }
         }
     }
-   
+
     void SetState(LaneStates newState)
     {
         curState = newState;
-    }
+    }  
 }

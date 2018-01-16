@@ -42,6 +42,7 @@ public class MP_GroundControl : MonoBehaviour {
         {
             isGrounded = true;
             transform.rotation = StartRot;
+            
         }
 	}
 

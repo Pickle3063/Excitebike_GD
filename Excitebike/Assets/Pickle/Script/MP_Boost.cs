@@ -14,10 +14,18 @@ public class MP_Boost : MonoBehaviour {
     private float bar = 0.0F;
     private float bar_tofill = 30.0F;  //# of seconds it takes to fill bar
     private float bar_usage = 10.0F;   //No of seconds it can be used for
+    
+    [SerializeField] float OverheatTimer;
+    
+    MP_ChangeLanes LaneSwitch;
+    MP_Overheat Heating;
 
     // Use this for initialization
     void Start () {
         floor = GameObject.Find("floor");
+        
+        LaneSwitch = GetComponent<MP_ChangeLanes>();
+        Heating = GetComponent<MP_Overheat>();
 	}
 	
 	// Update is called once per frame
@@ -36,8 +44,9 @@ public class MP_Boost : MonoBehaviour {
                 boosting = false;
                 bar = 0;
                 speed = minSpeed;
-                print("out of gas");
-                gameObject.GetComponent<MP_ChangeLanes>().MoveUp();
+                LaneSwitch.OverheatTime();
+                Heating.ChangeIsOverheated();
+                
                 //reset your speed here to what it was before
 
             }
@@ -75,5 +84,10 @@ public class MP_Boost : MonoBehaviour {
                 boosting = false;
             }
         }
+    }
+
+    public float GetOverheatTime()
+    {
+        return OverheatTimer;
     }
 }
