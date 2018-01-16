@@ -11,50 +11,56 @@ public class MP_Boost : MonoBehaviour {
     [SerializeField] float maxSpeed;
     float minSpeed = 0;
 
-    private float bar = 0.0F;
+    [SerializeField] private float bar;
     private float bar_tofill = 30.0F;  //# of seconds it takes to fill bar
     private float bar_usage = 10.0F;   //No of seconds it can be used for
-    
+    float maxBar = 50f;
+
     [SerializeField] float OverheatTimer;
-    
+
     MP_ChangeLanes LaneSwitch;
     MP_Overheat Heating;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         floor = GameObject.Find("floor");
-        
+        bar = maxBar;
         LaneSwitch = GetComponent<MP_ChangeLanes>();
         Heating = GetComponent<MP_Overheat>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
 
-     void FixedUpdate()
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    void FixedUpdate()
     {
 
         if (boosting)
         {
-            bar -= (1F / bar_usage) * Time.deltaTime;
+            bar -= bar_usage * Time.deltaTime;
             if (bar <= 0)
             {
                 boosting = false;
-                bar = 0;
+                bar = maxBar;
                 speed = minSpeed;
-                LaneSwitch.OverheatTime();
+                //LaneSwitch.OverheatTime();
                 Heating.ChangeIsOverheated();
-                
+
                 //reset your speed here to what it was before
 
             }
 
         }
-        else if (bar < 1)
+        else
         {
-            bar += (1F / bar_tofill) * Time.deltaTime;
+            if (bar < maxBar)
+            {
+                bar += bar_tofill * Time.deltaTime;
+            }
 
         }
 
@@ -65,9 +71,9 @@ public class MP_Boost : MonoBehaviour {
         //print("Boost");
         boosting = true;
         //the only difference other than the stopped/boosting bool is this, it leaves Time.deltaTime normal, can be increased by multiplying Time.deltaTime;
-        floor.transform.Translate(Vector2.left * (speed += (Time.deltaTime)));
+        floor.transform.Translate(Vector2.left * (speed += (Time.deltaTime * .15f)));
 
-        if(speed > maxSpeed)
+        if (speed > maxSpeed)
         {
             speed = maxSpeed;
         }
@@ -77,8 +83,8 @@ public class MP_Boost : MonoBehaviour {
     {
         if (boosting)
         {
-            floor.transform.Translate(Vector2.left * (speed -= Time.deltaTime * .5f));
-            if(speed < minSpeed)
+            floor.transform.Translate(Vector2.left * (speed -= Time.deltaTime * .1f));
+            if (speed < minSpeed)
             {
                 speed = minSpeed;
                 boosting = false;
