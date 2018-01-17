@@ -6,12 +6,12 @@ public class MP_Overheat : MonoBehaviour {
 
     bool isOverheated;
 
-    MP_ChangeLanes LaneSwitch;
+    MP_LaneValues LaneSwitch;
     MP_Boost BoostScript;
 
 	// Use this for initialization
 	void Start () {
-        LaneSwitch = GetComponent<MP_ChangeLanes>();
+        LaneSwitch = GetComponent<MP_LaneValues>();
         BoostScript = GetComponent<MP_Boost>();
 	}
 	
@@ -29,11 +29,11 @@ public class MP_Overheat : MonoBehaviour {
         isOverheated = !isOverheated;
         if (isOverheated)
         {
-            //LaneSwitch.ChangeNeedTopLane();
+            LaneSwitch.ChangeNeedTopLane();
         }
         else
         {
-            //LaneSwitch.ChangeNeedTopLane();
+            LaneSwitch.ChangeNeedTopLane();
         }
     }
 

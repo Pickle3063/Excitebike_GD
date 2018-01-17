@@ -5,7 +5,7 @@ using System;
 
 public class MP_Temp : MonoBehaviour
 {
-/*
+
     //sets up the lanes as states
     enum LaneStates
     {
@@ -226,7 +226,7 @@ public class MP_Temp : MonoBehaviour
         }
     }
 
-   /* public void ExitRampState()
+    public void ExitRampState()
     {
         if (Ramps.GetLaneNumber() == 0)
         {
@@ -250,5 +250,4 @@ public class MP_Temp : MonoBehaviour
     {
         curState = newState;
     }
-    */
 }

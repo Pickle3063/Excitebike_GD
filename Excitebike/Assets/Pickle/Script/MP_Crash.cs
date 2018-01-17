@@ -10,13 +10,13 @@ public class MP_Crash : MonoBehaviour {
     [SerializeField] float speedUpRecovery;
 
     //accessing scripts
-    MP_ChangeLanes LaneSwitch;
+    MP_LaneValues LaneSwitch;
     MP_GroundControl GroundCon;
 
 	// Use this for initialization
 	void Start () {
 
-        LaneSwitch = GetComponent<MP_ChangeLanes>();
+        LaneSwitch = GetComponent<MP_LaneValues>();
         GroundCon = GetComponent<MP_GroundControl>();
 	}
 	
