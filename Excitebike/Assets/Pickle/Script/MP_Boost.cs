@@ -18,7 +18,7 @@ public class MP_Boost : MonoBehaviour {
 
     [SerializeField] float OverheatTimer;
 
-    MP_ChangeLanes LaneSwitch;
+    MP_LaneValues LaneSwitch;
     MP_Overheat Heating;
 
     // Use this for initialization
@@ -26,7 +26,7 @@ public class MP_Boost : MonoBehaviour {
     {
         floor = GameObject.Find("floor");
         bar = maxBar;
-        LaneSwitch = GetComponent<MP_ChangeLanes>();
+        LaneSwitch = GetComponent<MP_LaneValues>();
         Heating = GetComponent<MP_Overheat>();
     }
 
@@ -47,7 +47,7 @@ public class MP_Boost : MonoBehaviour {
                 boosting = false;
                 bar = maxBar;
                 speed = minSpeed;
-                //LaneSwitch.OverheatTime();
+                LaneSwitch.OverheatTime();
                 Heating.ChangeIsOverheated();
 
                 //reset your speed here to what it was before

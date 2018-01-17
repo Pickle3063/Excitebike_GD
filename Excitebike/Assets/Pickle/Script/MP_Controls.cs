@@ -32,18 +32,6 @@ public class MP_Controls : MonoBehaviour {
             gameObject.GetComponent<MP_Boost>().StopBoost();
         }
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            //print("UP Directional pressed");
-            gameObject.GetComponent<MP_ChangeLanes>().MoveUp();
-        }
-
-        if (Input.GetKey(KeyCode.S))
-        {
-            //print("DOWN Directional pressed");
-            gameObject.GetComponent<MP_ChangeLanes>().MoveDown();
-        }
-
         if (Input.GetKey(KeyCode.A))
         {
            // print("LEFT Directional pressed");

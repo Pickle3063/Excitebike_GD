@@ -55,4 +55,9 @@ public class MP_Acceleration : MP_Controls {
         }
     }
 
+    public float GetSpeed()
+    {
+        return speed;
+    }
+
 }
