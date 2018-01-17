@@ -5,8 +5,6 @@ using UnityEngine;
 public class MP_Boost : MonoBehaviour {
 
     //works exactly like the script MP_Acceleration
-
-    //works exactly like the script MP_Acceleration
     float speed;
     bool boosting;
     GameObject floor;
@@ -14,15 +12,13 @@ public class MP_Boost : MonoBehaviour {
     float minSpeed = 0;
 
     [SerializeField] private float bar;
-    private float bar_tofill = 10.0F;  //# of seconds it takes to fill bar
-    private float bar_usage = 5.0F;   //No of seconds it can be used for
-    float maxBar = 35;
-
-    public GameObject tempMeter;
+    private float bar_tofill = 30.0F;  //# of seconds it takes to fill bar
+    private float bar_usage = 10.0F;   //No of seconds it can be used for
+    float maxBar = 50f;
 
     [SerializeField] float OverheatTimer;
 
-    MP_ChangeLanes LaneSwitch;
+    MP_LaneValues LaneSwitch;
     MP_Overheat Heating;
 
     // Use this for initialization
@@ -30,7 +26,7 @@ public class MP_Boost : MonoBehaviour {
     {
         floor = GameObject.Find("floor");
         bar = maxBar;
-        LaneSwitch = GetComponent<MP_ChangeLanes>();
+        LaneSwitch = GetComponent<MP_LaneValues>();
         Heating = GetComponent<MP_Overheat>();
     }
 
@@ -49,16 +45,14 @@ public class MP_Boost : MonoBehaviour {
             if (bar <= 0)
             {
                 boosting = false;
-                //bar = maxBar;
+                bar = maxBar;
                 speed = minSpeed;
-                //LaneSwitch.OverheatTime();
+                LaneSwitch.OverheatTime();
                 Heating.ChangeIsOverheated();
-                bar = 0.1f;
 
                 //reset your speed here to what it was before
 
             }
-
 
         }
         else
@@ -69,22 +63,6 @@ public class MP_Boost : MonoBehaviour {
             }
 
         }
-
-        tempMeter = GameObject.Find("TempBar");
-        //scaling the tempmeter to match the level of overheat
-        Vector3 barSize = Vector3.zero;
-        barSize.x = bar / -15;
-        barSize.y = 0.4157013f;
-        barSize.z = 1;
-        tempMeter.transform.localScale = barSize;
-
-
-
-
-        //moving it forward a little bit so it only "grows to the right"
-        Vector3 tempPos = tempMeter.transform.localPosition;
-        tempPos.x = -1.2f - tempMeter.transform.localScale.x / 2;
-        tempMeter.transform.localPosition = tempPos;
 
     }
 

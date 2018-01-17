@@ -20,14 +20,14 @@ public class MP_GroundControl : MonoBehaviour {
 
     //accessing crash script
     MP_Crash Crashing;
-    MP_ChangeLanes LaneSwitch;
+    MP_LaneValues LaneSwitch;
 
 	// Use this for initialization
 	void Start() {
         //sets starting rotation for later use
          StartRot = transform.rotation;
         Crashing = GetComponent<MP_Crash>();
-        LaneSwitch = GetComponent<MP_ChangeLanes>();
+        LaneSwitch = GetComponent<MP_LaneValues>();
 	}
 	
 	// Update is called once per frame
@@ -78,7 +78,7 @@ public class MP_GroundControl : MonoBehaviour {
         {
             //do animation stuff here i guess
             //sets the crash timer in MP_ChangeLanes to the crash timer for a wheelie
-            LaneSwitch.WheelieCrash();
+            //LaneSwitch.WheelieCrash();
         }
 
         //checks to see if player has crashed
