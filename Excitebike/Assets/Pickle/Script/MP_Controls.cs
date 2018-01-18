@@ -4,139 +4,94 @@ using UnityEngine;
 
 public class MP_Controls : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-        
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    bool canAccel;
+    bool canBoost;
+    bool canRot;
+
+    // Use this for initialization
+    void Start() {
+        canAccel = true;
+        canBoost = true;
+        canRot = true;
+    }
+
+    // Update is called once per frame
+    void Update() {
         if (Input.GetKey(KeyCode.RightArrow))
         {
             //print("A button pressed");
-            //these are written out because I was experiencing weird NullReferenceExcpetions when I made shortcuts
-            gameObject.GetComponent<MP_Acceleration>().Accelerate();
+            if (canAccel)
+            {
+                gameObject.GetComponent<MP_Boost_Accel>().Accelerate();
+            }
+
         }
         else
         {
-            gameObject.GetComponent<MP_Acceleration>().Decelerate();
+            gameObject.GetComponent<MP_Boost_Accel>().Decelerate();
         }
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             //print("B button pressed");
-            gameObject.GetComponent<MP_Boost>().Boost();
+            if (canBoost)
+            {
+                gameObject.GetComponent<MP_Boost_Accel>().Boost();
+            }
         }
         else
         {
-            gameObject.GetComponent<MP_Boost>().StopBoost();
+            gameObject.GetComponent<MP_Boost_Accel>().StopBoost();
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-           // print("LEFT Directional pressed");
-            gameObject.GetComponent<MP_GroundControl>().IncreaseRot();
+            // print("LEFT Directional pressed");
+            if (canRot)
+            {
+                gameObject.GetComponent<MP_GroundControl>().IncreaseRot();
+            }
         }
         else
         {
             gameObject.GetComponent<MP_GroundControl>().DecreaseRot();
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-           // print("RIGHT Directional pressed");
-        }
-
         if (Input.GetKeyDown(KeyCode.Return))
         {
-           // print("START button pressed");
+            // print("START button pressed");
         }
 
         if (Input.GetKeyDown(KeyCode.Quote))
         {
-           // print("SELECT button pressed");
+            // print("SELECT button pressed");
         }
     }
 
-    /*void AButton()
+    public bool GetCanAccel()
     {
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            print("A button pressed");
-            //these are written out because I was experiencing weird NullReferenceExcpetions when I made shortcuts
-            gameObject.GetComponent<MP_Acceleration>().Accelerate();
-        }
-        else
-        {
-            gameObject.GetComponent<MP_Acceleration>().Decelerate();
-        }
+        return canAccel;
+    }
+    public void ChangeCanAccel()
+    {
+        canAccel = !canAccel;
     }
 
-    void BButton()
+    public bool GetCanBoost()
     {
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            print("B button pressed");
-            gameObject.GetComponent<MP_Boost>().Boost();
-        }
-        else
-        {
-            gameObject.GetComponent<MP_Boost>().StopBoost();
-        }
+        return canBoost;
+    }
+    public void ChangeCanBoost()
+    {
+        canBoost = !canBoost;
     }
 
-    void UpDirectional()
+    public bool GetCanRot()
     {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            print("UP Directional pressed");
-            gameObject.GetComponent<MP_ChangeLanes>().MoveUp();
-        }
+        return canRot;
     }
-
-    void DownDirectional()
+    public void ChangeCanRot()
     {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            print("DOWN Directional pressed");
-            gameObject.GetComponent<MP_ChangeLanes>().MoveDown();
-        }
+        canRot = !canRot;
     }
-
-    void LeftDirectional()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            print("LEFT Directional pressed");
-            gameObject.GetComponent<MP_GroundControl>().IncreaseRot();
-        }
-        else
-        {
-            gameObject.GetComponent<MP_GroundControl>().DecreaseRot();
-        }
-    }
-
-    void RightDirectional()
-    {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            print("RIGHT Directional pressed");
-        }
-    }
-
-    void StartButton()
-    {
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            print("START button pressed");
-        }
-    }
-
-    void SelectButton()
-    {
-        if (Input.GetKeyDown(KeyCode.Quote))
-        {
-            print("SELECT button pressed");
-        }
-    }*/
 }
