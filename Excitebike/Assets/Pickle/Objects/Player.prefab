@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 114866082912424392}
   - component: {fileID: 114108344763745408}
   - component: {fileID: 54777905703425548}
+  - component: {fileID: 114677597343778112}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -233,6 +234,19 @@ MonoBehaviour:
   bar: 2
   tempMeter: {fileID: 0}
   OverheatTimer: 5
+--- !u!114 &114677597343778112
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1461073927567586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8bc35fcbcb17f74ab1640a84f0d4bab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  accel: {fileID: 114916298129637776}
+  control: {fileID: 114363052331358062}
 --- !u!114 &114722134081466654
 MonoBehaviour:
   m_ObjectHideFlags: 1
