@@ -7,12 +7,12 @@ public class MP_Overheat : MonoBehaviour {
     bool isOverheated;
 
     MP_LaneValues LaneSwitch;
-    MP_Boost BoostScript;
+    MP_Boost_Accel BoostScript;
 
 	// Use this for initialization
 	void Start () {
         LaneSwitch = GetComponent<MP_LaneValues>();
-        BoostScript = GetComponent<MP_Boost>();
+        BoostScript = GetComponent<MP_Boost_Accel>();
 	}
 	
 	// Update is called once per frame

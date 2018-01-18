@@ -18,6 +18,8 @@ public class MP_GroundControl : MonoBehaviour {
     //used to find the number equal to a specific rotation for use later
     [SerializeField] float curZRot;
 
+    bool isWheelie;
+
     //accessing crash script
     MP_Crash Crashing;
     MP_LaneValues LaneSwitch;
@@ -42,6 +44,7 @@ public class MP_GroundControl : MonoBehaviour {
         {
             isGrounded = true;
             transform.rotation = StartRot;
+            isWheelie = false;
             
         }
 	}
@@ -51,6 +54,7 @@ public class MP_GroundControl : MonoBehaviour {
     {
         isGrounded = false;
         gameObject.transform.Rotate(new Vector3(0f, 0f, Speed));
+        isWheelie = true;
        
     }
     
@@ -74,7 +78,7 @@ public class MP_GroundControl : MonoBehaviour {
     void CrashCheck()
     {
         //checks to see if you're in that zone in which the player wobbles
-        if(curRot.z > 0.4539904)//0.4539904 = 54f
+        if (curRot.z > 0.4539904)//0.4539904 = 54f
         {
             //do animation stuff here i guess
             //sets the crash timer in MP_ChangeLanes to the crash timer for a wheelie
@@ -82,18 +86,22 @@ public class MP_GroundControl : MonoBehaviour {
         }
 
         //checks to see if player has crashed
-        if(curRot.z > 0.5735764)//0.5735764 = 70f
+        if (curRot.z > 0.5735764)//0.5735764 = 70f
         {
             //calls a function that sets the current crash timer to the wheelie crash timer
             LaneSwitch.WheelieCrash();
             //changing boolean that checks if you are crashing and starts rotation
             Crashing.ChangeIsCrashed();
             ResetRot();
-            
+
         }
-       
+
     }
 
+    public bool GetIsWheelie()
+    {
+        return isWheelie;
+    }
     //the wheelie crash timer accessible by other scripts
     public float GetWheelieTime()
     {

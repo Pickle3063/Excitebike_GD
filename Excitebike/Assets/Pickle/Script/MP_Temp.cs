@@ -48,11 +48,10 @@ public class MP_Temp : MonoBehaviour
     //accessing scripts
     MP_Crash Crashing;
     MP_Controls Controls;
-    MP_Acceleration Accel;
+   
     MP_GroundControl GroundCon;
-    MP_Boost BoostScript;
+  
     MP_Overheat Heating;
-    MP_Ramping Ramps;
 
     // Use this for initialization
     void Start()
@@ -70,11 +69,11 @@ public class MP_Temp : MonoBehaviour
 
         Crashing = GetComponent<MP_Crash>();
         Controls = GetComponent<MP_Controls>();
-        Accel = GetComponent<MP_Acceleration>();
+        
         GroundCon = GetComponent<MP_GroundControl>();
-        BoostScript = GetComponent<MP_Boost>();
+       
         Heating = GetComponent<MP_Overheat>();
-        Ramps = GetComponent<MP_Ramping>();
+
     }
 
     // Update is called once per frame
@@ -98,7 +97,7 @@ public class MP_Temp : MonoBehaviour
             {
                 //disables player input, it needs both disabled for some reason
                 Controls.enabled = false;
-                Accel.enabled = false;
+               
 
                 //looping timer and state change
                 timePassed = 0;
@@ -111,7 +110,7 @@ public class MP_Temp : MonoBehaviour
 
     public void OverheatTime()
     {
-        crashTimer = BoostScript.GetOverheatTime();
+       
     }
 
     //used to set the timer to the crash time for a wheelie
@@ -172,25 +171,25 @@ public class MP_Temp : MonoBehaviour
     void StateOne()
     {
         curHeight = heightOne;
-        Ramps.LaneOne();
+
     }
 
     void StateTwo()
     {
         curHeight = heightTwo;
-        Ramps.LaneTwo();
+
     }
 
     void StateThree()
     {
         curHeight = heightThree;
-        Ramps.LaneThree();
+
     }
 
     void StateFour()
     {
         curHeight = heightFour;
-        Ramps.LaneFour();
+
     }
 
     void StateRec()
@@ -206,7 +205,7 @@ public class MP_Temp : MonoBehaviour
                 Heating.ChangeIsOverheated();
                 curState = LaneStates.FOUR;
                 Controls.enabled = true;
-                Accel.enabled = true;
+              
             }
         }
 
@@ -221,30 +220,12 @@ public class MP_Temp : MonoBehaviour
                 Crashing.ChangeIsCrashed();
                 curState = LaneStates.FOUR;
                 Controls.enabled = true;
-                Accel.enabled = true;
+      
             }
         }
     }
 
-    public void ExitRampState()
-    {
-        if (Ramps.GetLaneNumber() == 0)
-        {
-            curState = LaneStates.ONE;
-        }
-        if (Ramps.GetLaneNumber() == 1)
-        {
-            curState = LaneStates.TWO;
-        }
-        if (Ramps.GetLaneNumber() == 2)
-        {
-            curState = LaneStates.THREE;
-        }
-        if (Ramps.GetLaneNumber() == 3)
-        {
-            curState = LaneStates.FOUR;
-        }
-    }
+   
 
     void SetState(LaneStates newState)
     {

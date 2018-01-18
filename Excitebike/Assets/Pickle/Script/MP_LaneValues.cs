@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class MP_LaneValues : MonoBehaviour {
     //the heights of the four different lanes
-    [SerializeField] float heightOne = -1.4f;
-    [SerializeField] float heightTwo = -0.4f;
-    [SerializeField] float heightThree = 0.6f;
-    [SerializeField] float heightFour = 1.6f;
-    [SerializeField] float heightRec = 2.6f;
-
+     float heightOne = 0f;
+    float heightTwo = -1f;
+    float heightThree = -2f;
+     float heightFour = -3f;
+     float heightRec = -4f;
+    
     //speed at which the player changes lanes
     [SerializeField] float speed;
 
@@ -25,13 +25,17 @@ public class MP_LaneValues : MonoBehaviour {
 
     MP_Crash Crashing;
     MP_GroundControl GroundCon;
-    MP_Boost BoostScript;
+    MP_Boost_Accel BoostScript;
+    MP_AirControl ACon;
+    MP_RampCon RCon;
 
     private void Start()
     {
         Crashing = GetComponent<MP_Crash>();
         GroundCon = GetComponent<MP_GroundControl>();
-        BoostScript = GetComponent<MP_Boost>();
+        BoostScript = GetComponent<MP_Boost_Accel>();
+        ACon = GetComponent<MP_AirControl>();
+        RCon = GetComponent<MP_RampCon>();
     }
 
     private void Update()
@@ -104,6 +108,16 @@ public class MP_LaneValues : MonoBehaviour {
     public void WheelieCrash()
     {
         crashTimer = GroundCon.GetWheelieTime();
+    }
+
+    public void BackRotCrash()
+    {
+        crashTimer = ACon.GetBackCrashTime();
+    }
+
+    public void ForRotCrash()
+    {
+
     }
 
     //used by MP_Crash to speed up the timer during a crash
