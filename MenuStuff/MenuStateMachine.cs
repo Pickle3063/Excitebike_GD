@@ -5,12 +5,15 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
 
+//"Script by Brian Dang"
+
 public class MenuStateMachine : MonoBehaviour {
 
     private MenuStuff source;
     private Dictionary<MenuState, Action> menu = new Dictionary<MenuState, Action>();
     private MenuState curState = MenuState.SELECT1;
     private bool SoloOn;
+    public float time;
     private bool TitleDone = false;
     public AudioSource audiosource;
 
@@ -32,6 +35,9 @@ public class MenuStateMachine : MonoBehaviour {
         DESIGN4,
         DESIGN5,
         DESIGN6,
+
+        RESULT,
+        POSTRESULT,
 
         NUM_STATES
     }
@@ -55,6 +61,9 @@ public class MenuStateMachine : MonoBehaviour {
         menu.Add(MenuState.DESIGN5, new Action(DesignLoad));
         menu.Add(MenuState.DESIGN6, new Action(DesignReset));
 
+        menu.Add(MenuState.RESULT, new Action(Results));
+        menu.Add(MenuState.POSTRESULT, new Action(TrackResult));
+
         GameObject image = GameObject.Find("MenuBase");
         if (!image)
         {
@@ -64,7 +73,10 @@ public class MenuStateMachine : MonoBehaviour {
         {
             source = image.GetComponent<MenuStuff>();
         }
-
+        source.BestTime.GetComponent<Text>().enabled = false;
+        source.PTime.GetComponent<Text>().enabled = false;
+        source.TrackTime.GetComponent<Text>().enabled = false;
+        
         SetState(MenuState.SELECT1);
         GameObject.Find("MenuImage").GetComponent<Image>().sprite = source.StartMenu1;
         audiosource.clip = source.TitleTrack[UnityEngine.Random.Range(0, source.TitleTrack.Length)];
@@ -92,6 +104,7 @@ public class MenuStateMachine : MonoBehaviour {
     void SelectionOne()
     {
         GameObject.Find("MenuImage").GetComponent<Image>().sprite = source.StartMenu1;
+        source.TrackTime.GetComponent<Text>().enabled = false;
         if (Input.GetKeyDown(KeyCode.S))
         {
             SetState(MenuState.SELECT2);
@@ -101,6 +114,15 @@ public class MenuStateMachine : MonoBehaviour {
         {
             SetState(MenuState.SELECT3);
             Beep();
+        }
+
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            SetState(MenuState.RESULT);
+            audiosource.Stop();
+            audiosource.clip = source.ResultSound;
+            audiosource.Play();
+            time = 0.0f;
         }
 
         if (Input.GetKeyDown(KeyCode.Return))
@@ -176,7 +198,7 @@ public class MenuStateMachine : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.Return) && SoloOn)
         {
-            SceneManager.LoadScene("");
+            SceneManager.LoadScene("PickleScene");
         }
         else if (Input.GetKeyDown(KeyCode.Return) && !SoloOn)
         {
@@ -384,6 +406,37 @@ public class MenuStateMachine : MonoBehaviour {
     }
 
 
+    //Result Screen, Press "J" on Selection A to show an example Result Screen.
+    void Results()
+    {
+        GameObject.Find("MenuImage").GetComponent<Image>().sprite = source.ResultScreen;
+        source.BestTime.GetComponent<Text>().enabled = true;
+        source.PTime.GetComponent<Text>().enabled = true;
+        string minutes = ((int)(Time.time - Time.time) / 60).ToString();
+        string seconds = (Time.time - Time.time % 60).ToString("#0000");
+        source.BestTime.text = minutes + ":" + seconds;
+
+        if (time > 6.0f)
+        {
+            SetState(MenuState.POSTRESULT);
+        }
+
+    }
+
+    void TrackResult()
+    {
+        source.BestTime.GetComponent<Text>().enabled = false;
+        source.PTime.GetComponent<Text>().enabled = false;
+        source.TrackTime.GetComponent<Text>().enabled = true;
+        GameObject.Find("MenuImage").GetComponent<Image>().sprite = source.TrackResult;
+
+        if(time > 12.0f)
+        {
+            SetState(MenuState.SELECT1);
+        }
+    }
+
+
     void SetState(MenuState newState)
     {
         curState = newState;
@@ -391,5 +444,8 @@ public class MenuStateMachine : MonoBehaviour {
 	
 	void Update () {
         menu[curState].Invoke();
-	}
+        time += Time.deltaTime;
+
+
+    }
 }
