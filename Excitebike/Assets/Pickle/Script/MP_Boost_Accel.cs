@@ -18,9 +18,11 @@ public class MP_Boost_Accel : MonoBehaviour {
     GameObject PCont;
  
     [SerializeField] private float bar;
-    private float bar_tofill = 30.0F;  //# of seconds it takes to fill bar
-    private float bar_usage = 10.0F;   //No of seconds it can be used for
-    float maxBar = 50f;
+    private float bar_tofill = 10.0F;  //# of seconds it takes to fill bar
+    private float bar_usage = 5.0F;   //No of seconds it can be used for
+    float maxBar = 20f;
+
+    public GameObject tempMeter;
 
     [SerializeField] float OverheatTimer;
 
@@ -73,6 +75,23 @@ public class MP_Boost_Accel : MonoBehaviour {
             }
 
         }
+
+        tempMeter = GameObject.Find("TempBar");
+        //scaling the tempmeter to match the level of overheat
+        Vector3 barSize = Vector3.zero;
+        barSize.x = bar / -15;
+        barSize.y = 0.4157013f;
+        barSize.z = 1;
+        tempMeter.transform.localScale = barSize;
+
+
+
+
+        //moving it forward a little bit so it only "grows to the right"
+        Vector3 tempPos = tempMeter.transform.localPosition;
+        tempPos.x = -1.2f - tempMeter.transform.localScale.x / 2;
+        tempMeter.transform.localPosition = tempPos;
+
 
     }
 

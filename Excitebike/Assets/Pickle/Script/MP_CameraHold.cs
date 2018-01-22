@@ -12,7 +12,7 @@ public class MP_CameraHold : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Pos = new Vector3(GameObject.Find("PlayerContainer").transform.position.x, 2.34f + GameObject.Find("floor").transform.position.y, -10);
+        Pos = new Vector3(GameObject.Find("PlayerContainer").transform.position.x, 0.59f + GameObject.Find("floor").transform.position.y, -10);
         transform.SetPositionAndRotation(Pos, transform.rotation);
 	}
 }
