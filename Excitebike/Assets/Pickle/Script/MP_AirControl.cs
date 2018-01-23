@@ -18,9 +18,9 @@ public class MP_AirControl : MonoBehaviour
 
     [SerializeField] float speed;
     //timer used for landing on right side of ramp while rotated back
-    //[SerializeField] float BackCrashTime; 
+    [SerializeField] float BackCrashTime;
 
-        //timer setup
+    //timer setup
     float timer = .1f;
     float timePassed;
 
@@ -206,9 +206,9 @@ public class MP_AirControl : MonoBehaviour
     }
 
     //timer for landing on right side of ramp while leaning back
-    //public float GetBackCrashTime()
-    //{
-    //    return BackCrashTime;
-    //}
+    public float GetBackCrashTime()
+    {
+        return BackCrashTime;
+    }
 
 }

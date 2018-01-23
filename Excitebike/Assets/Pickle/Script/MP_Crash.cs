@@ -38,16 +38,16 @@ public class MP_Crash : MonoBehaviour {
                 LaneSwitch.SpeedUpCrashTime();
             }
         }
-        ////if rotated back crash
-        //if (isBRotCrashed)
-        //{
-        //    GroundCon.DecreaseRot();
-        //    //the button you mash to speed up the timer after a crash
-        //    if (Input.GetKeyDown(KeyCode.RightArrow))
-        //    {
-        //        LaneSwitch.SpeedUpCrashTime();
-        //    }
-        //}
+        //if rotated back crash
+        if (isBRotCrashed)
+        {
+            GroundCon.DecreaseRot();
+            //the button you mash to speed up the timer after a crash
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                LaneSwitch.SpeedUpCrashTime();
+            }
+        }
         //if rotated forwards crash
         if (isFRotCrashed)
         {
@@ -74,23 +74,23 @@ public class MP_Crash : MonoBehaviour {
             LaneSwitch.NeedTopLaneFalse();
         }
     }
-    ////toggles if you were in a back rotation crash mentioned in other scripts
-    //public void ChangeIsBRotCrashed()
-    //{
-    //    isBRotCrashed = !isBRotCrashed;
-    //    if (isBRotCrashed)
-    //    {
+    //toggles if you were in a back rotation crash mentioned in other scripts
+    public void ChangeIsBRotCrashed()
+    {
+        isBRotCrashed = !isBRotCrashed;
+        if (isBRotCrashed)
+        {
 
-    //        LaneSwitch.NeedTopLaneTrue();
-    //    }
-    //    else
-    //    {
-    //        LaneSwitch.NeedTopLaneFalse();
-    //    }
+            LaneSwitch.NeedTopLaneTrue();
+        }
+        else
+        {
+            LaneSwitch.NeedTopLaneFalse();
+        }
 
-    //}
+    }
 
-        //toggles forward rotational crash true
+    //toggles forward rotational crash true
     public void ChangeIsFRotCrashedTrue()
     {
         isFRotCrashed = true;

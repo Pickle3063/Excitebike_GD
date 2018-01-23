@@ -15,7 +15,7 @@ public class MP_RampCon : MonoBehaviour {
 
    bool wasWheelie;
     //how long to remain crashed from a crash of landing rotated forward
-   float forCrashTime;
+   [SerializeField] float forCrashTime;
     //for the check if you were rotated forward
    bool WasFor;
     //handles the switching between ground to air

@@ -229,6 +229,21 @@ Prefab:
       propertyPath: curState
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114552996257428876, guid: 854fabda8aeca7b488449cabb210bd2f,
+        type: 2}
+      propertyPath: BackCrashTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114026155566772492, guid: 854fabda8aeca7b488449cabb210bd2f,
+        type: 2}
+      propertyPath: forCrashTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114996789866750802, guid: 854fabda8aeca7b488449cabb210bd2f,
+        type: 2}
+      propertyPath: Speed
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 854fabda8aeca7b488449cabb210bd2f, type: 2}
   m_IsPrefabParent: 0
