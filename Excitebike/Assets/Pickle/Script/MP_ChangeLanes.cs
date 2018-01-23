@@ -275,15 +275,15 @@ public class RecLane : MP_ChangeLanesState
             }
         }
         //checked for if you crashed from landing on the right side of a ramp while rotated back
-        //if (Crashing.GetIsBRotCrashed())
-        //{
-        //    if (lValues.GetTimePassed() > lValues.GetCrashTimer())
-        //    {
-        //        Crashing.ChangeIsBRotCrashed();
-                
-        //        machine.ChangeState<LaneFour>();
-        //    }
-        //}
+        if (Crashing.GetIsBRotCrashed())
+        {
+            if (lValues.GetTimePassed() > lValues.GetCrashTimer())
+            {
+                Crashing.ChangeIsBRotCrashed();
+
+                machine.ChangeState<LaneFour>();
+            }
+        }
         //checks if you crashed from landing on the track while rotated forward
         if (Crashing.GetIsFRotCrashed())
         {

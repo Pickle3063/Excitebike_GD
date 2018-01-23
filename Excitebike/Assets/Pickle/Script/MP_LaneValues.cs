@@ -116,12 +116,12 @@ public class MP_LaneValues : MonoBehaviour {
         crashTimer = GroundCon.GetWheelieTime();
     }
     //used to set the timer to the crash time for landing on the right side of a ramp while rotated back
-    //public void BackRotCrash()
-    //{
-    //    crashTimer = ACon.GetBackCrashTime();
-    //}
+    public void BackRotCrash()
+    {
+        crashTimer = ACon.GetBackCrashTime();
+    }
 
-        //used to set the timer to the crash timer for landing on the track while rotated forward
+    //used to set the timer to the crash timer for landing on the track while rotated forward
     public void ForRotCrash()
     {
         crashTimer = RCon.GetFRotTime();
