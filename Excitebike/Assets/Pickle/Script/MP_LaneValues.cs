@@ -14,10 +14,10 @@ public class MP_LaneValues : MonoBehaviour {
     [SerializeField] float speed;
 
     //stops the state change from being called back to back
-    [SerializeField] float timer = 0.2f;
-    [SerializeField] float timePassed;
+    float timer = 0.2f;
+    float timePassed;
     //secondary timer for when you crash
-    [SerializeField] float crashTimer;
+    float crashTimer;
 
     //checks if the player needs to go to the lane above four for overheating or crashing
     bool needTopLane = false;
@@ -40,10 +40,11 @@ public class MP_LaneValues : MonoBehaviour {
 
     private void Update()
     {
+        //the timer
         timePassed += Time.deltaTime;
  
     }
-
+    //getting heights
     public float GetHeightOne()
     {
         return heightOne;
@@ -68,37 +69,42 @@ public class MP_LaneValues : MonoBehaviour {
     {
         return heightRec;
     }
-
+    //getting this script's speed
     public float GetSpeed()
     {
         return speed;
     }
-
+    //getting the general timer
     public float GetTimer()
     {
         return timer;
     }
-    
+    //getting how much time has passed 
     public float GetTimePassed()
     {
         return timePassed;
     }
-
+    //getting the timer for a crash
     public float GetCrashTimer()
     {
         return crashTimer;
     }
-
+    //for if you need the recovery lane
     public bool GetNeedToplane()
     {
         return needTopLane;
     }
-
-    public void ChangeNeedTopLane()
+    //sets needing the recovery lane to true
+    public void NeedTopLaneTrue()
     {
-        needTopLane = !needTopLane;
+        needTopLane = true;
     }
-
+    //sets needing the recovery lane to false
+    public void NeedTopLaneFalse()
+    {
+        needTopLane = false;
+    }
+    //for setting the crash timer to the overheat timer
     public void OverheatTime()
     {
         crashTimer = BoostScript.GetOverheatTime();
@@ -109,15 +115,16 @@ public class MP_LaneValues : MonoBehaviour {
     {
         crashTimer = GroundCon.GetWheelieTime();
     }
+    //used to set the timer to the crash time for landing on the right side of a ramp while rotated back
+    //public void BackRotCrash()
+    //{
+    //    crashTimer = ACon.GetBackCrashTime();
+    //}
 
-    public void BackRotCrash()
-    {
-        crashTimer = ACon.GetBackCrashTime();
-    }
-
+        //used to set the timer to the crash timer for landing on the track while rotated forward
     public void ForRotCrash()
     {
-
+        crashTimer = RCon.GetFRotTime();
     }
 
     //used by MP_Crash to speed up the timer during a crash
@@ -126,6 +133,7 @@ public class MP_LaneValues : MonoBehaviour {
         timePassed = timePassed + Crashing.GetSpeedUpTime();
     }
 
+    //resetting timer
     public void ResetTimer()
     {
         timePassed = 0;

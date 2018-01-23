@@ -18,25 +18,30 @@ public class MP_Overheat : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        //stops the use of boost while you are overheating
         if (isOverheated)
         {
             BoostScript.StopBoost();
         }
 	}
 
+    //toggles overheating
     public void ChangeIsOverheated()
     {
         isOverheated = !isOverheated;
+        //if overheating then you need the recovery lane
         if (isOverheated)
         {
-            LaneSwitch.ChangeNeedTopLane();
+            LaneSwitch.NeedTopLaneTrue();
         }
+        //if not overheating then you don't need the recovery lane anymore
         else
         {
-            LaneSwitch.ChangeNeedTopLane();
+            LaneSwitch.NeedTopLaneFalse();
         }
     }
 
+    //for other scripts to check the state of the bool
     public bool GetIsOverheated()
     {
         return isOverheated;
