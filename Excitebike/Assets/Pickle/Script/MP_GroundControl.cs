@@ -16,22 +16,20 @@ public class MP_GroundControl : MonoBehaviour {
     //how long the player is in the recovery lane for a wheelie crash
     [SerializeField] float WheelieCrashTimer;
     //used to find the number equal to a specific rotation for use later
-    float curZRot;
+    [SerializeField] float curZRot;
 
     bool isWheelie;
 
+    //accessing crash script
     MP_Crash Crashing;
     MP_LaneValues LaneSwitch;
 
 	// Use this for initialization
 	void Start() {
         //sets starting rotation for later use
-        StartRot = new Quaternion(0, 0, 0, 1);
-        //sets starting position to the base amount
-        transform.SetPositionAndRotation(transform.position, StartRot);
+         StartRot = transform.rotation;
         Crashing = GetComponent<MP_Crash>();
         LaneSwitch = GetComponent<MP_LaneValues>();
-        
 	}
 	
 	// Update is called once per frame
@@ -40,7 +38,6 @@ public class MP_GroundControl : MonoBehaviour {
         CrashCheck();
         //updating the current rotation every frame
         curRot = transform.rotation;
-        //for checking the quaternion of Z
         curZRot = curRot.z;
         //makes sure the player stops rotating when they hit the ground
         if (transform.rotation.z <= 0)
@@ -64,11 +61,6 @@ public class MP_GroundControl : MonoBehaviour {
     //decreases Z rotation by a speed
     public void DecreaseRot()
     {
-        //making sure the rotation is 0 when done
-        if(curRot != StartRot)
-        {
-            gameObject.transform.Rotate(new Vector3(0f, 0f, -Speed));
-        }
         if (!isGrounded)
         {
             gameObject.transform.Rotate(new Vector3(0f, 0f, -Speed));
