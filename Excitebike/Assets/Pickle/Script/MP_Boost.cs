@@ -11,58 +11,79 @@ public class MP_Boost : MonoBehaviour {
     [SerializeField] float maxSpeed;
     float minSpeed = 0;
 
-    private float bar = 0.0F; //bar at start
-    private float bar_tofill = 30.0F;  //# of seconds it takes to fill bar
-    private float bar_usage = 10.0F;   //No of seconds it can be used for
+    [SerializeField] private float bar;
+    private float bar_tofill = 10.0F;  //# of seconds it takes to fill bar
+    private float bar_usage = 5.0F;   //No of seconds it can be used for
+    float maxBar = 20f;
 
-    MP_Crash Overheat;
-    MP_ChangeLanes LaneSwitch;
-    
+    public GameObject tempMeter;
 
+
+    [SerializeField] float OverheatTimer;
+
+    MP_LaneValues LaneSwitch;
+    MP_Overheat Heating;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         floor = GameObject.Find("floor");
-        
-        
-
+        bar = maxBar;
+        LaneSwitch = GetComponent<MP_LaneValues>();
+        Heating = GetComponent<MP_Overheat>();
     }
 
     // Update is called once per frame
-    void Update () {
-		
-	}
+    void Update()
+    {
 
-     void FixedUpdate()
+    }
+
+    void FixedUpdate()
     {
 
         if (boosting)
         {
-            bar -= (1F / bar_usage) * Time.deltaTime; //If player is boosting the bar/fuel is reduced to 0 over a period of m_tank_usage seconds
-
+            bar -= bar_usage * Time.deltaTime;
             if (bar <= 0)
             {
                 boosting = false;
-                bar = 0;
+                //bar = maxBar;
                 speed = minSpeed;
-                print("out of gas");
-         
-                //consequences of bar <= 0, overheating script to be placed here.
+                //LaneSwitch.OverheatTime();
+                Heating.ChangeIsOverheated();
+                bar = 0.1f;
 
-            }
-            else
-            {
-               
-                //else to make sure controls aren't disabled for good without a way to be activated again.
+                //reset your speed here to what it was before
+
             }
 
 
         }
-        else if (bar < 1)
+        else
         {
-            bar += (1F / bar_tofill) * Time.deltaTime; //If you're just travelling normally your tank will fill up over a period of m_tank_tofill seconds.
+            if (bar < maxBar)
+            {
+                bar += bar_tofill * Time.deltaTime;
+            }
 
         }
+
+        tempMeter = GameObject.Find("TempBar");
+        //scaling the tempmeter to match the level of overheat
+        Vector3 barSize = Vector3.zero;
+        barSize.x = bar / -15;
+        barSize.y = 0.4157013f;
+        barSize.z = 1;
+        tempMeter.transform.localScale = barSize;
+
+
+
+
+        //moving it forward a little bit so it only "grows to the right"
+        Vector3 tempPos = tempMeter.transform.localPosition;
+        tempPos.x = -1.2f - tempMeter.transform.localScale.x / 2;
+        tempMeter.transform.localPosition = tempPos;
 
     }
 
@@ -71,9 +92,9 @@ public class MP_Boost : MonoBehaviour {
         //print("Boost");
         boosting = true;
         //the only difference other than the stopped/boosting bool is this, it leaves Time.deltaTime normal, can be increased by multiplying Time.deltaTime;
-        floor.transform.Translate(Vector2.left * (speed += (Time.deltaTime)));
+        floor.transform.Translate(Vector2.left * (speed += (Time.deltaTime * .15f)));
 
-        if(speed > maxSpeed)
+        if (speed > maxSpeed)
         {
             speed = maxSpeed;
         }
@@ -83,12 +104,17 @@ public class MP_Boost : MonoBehaviour {
     {
         if (boosting)
         {
-            floor.transform.Translate(Vector2.left * (speed -= Time.deltaTime * .5f));
-            if(speed < minSpeed)
+            floor.transform.Translate(Vector2.left * (speed -= Time.deltaTime * .1f));
+            if (speed < minSpeed)
             {
                 speed = minSpeed;
                 boosting = false;
             }
         }
+    }
+
+    public float GetOverheatTime()
+    {
+        return OverheatTimer;
     }
 }

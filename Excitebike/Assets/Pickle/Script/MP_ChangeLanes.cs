@@ -1,207 +1,469 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-public class MP_ChangeLanes : MonoBehaviour {
+public class MP_ChangeLanes : ByTheTale.StateMachine.MachineBehaviour
+{
+   
+<<<<<<< HEAD
 
-    //sets up the lanes as states
-    enum LaneStates
+    public override void AddStates()
     {
-        ONE,//bottom lane
-        TWO,//second lane up
-        THREE,//third lane up
-        FOUR,//fourth lane up
-        RECLANE//where the player goes after crashing or overheating
+        AddState<LaneOne>();
+        AddState<LaneTwo>();
+        AddState<LaneThree>();
+        AddState<LaneFour>();
+        AddState<RecLane>();
+
+=======
+    //adding the individual lane states
+    public override void AddStates()
+    {
+        AddState<LaneOne>(); //bottom lane
+        AddState<LaneTwo>();
+        AddState<LaneThree>();
+        AddState<LaneFour>(); //top lane
+        AddState<RecLane>(); //recovery lane
+
+        //setting the starting lane
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+        SetInitialState<LaneOne>();
     }
 
-    //sets current state as lane three(second from the top)
-    [SerializeField] LaneStates curState = LaneStates.ONE;
-    Dictionary<LaneStates, Action> fsm = new Dictionary<LaneStates, Action>();
+}
 
-    //the heights of the four different lanes
-    [SerializeField] float heightOne = -1.4f;
-    [SerializeField] float heightTwo = -0.4f;
-    [SerializeField] float heightThree = 0.6f;
-    [SerializeField] float heightFour = 1.6f;
-    [SerializeField] float heightRec = 2.6f;
+public class MP_ChangeLanesState : ByTheTale.StateMachine.State
+{
+    protected MP_LaneValues lValues;
+    protected MP_Boost_Accel Accel;
+    protected MP_Controls Control;
+    protected MP_Overheat Heating;
+    protected MP_Crash Crashing;
+<<<<<<< HEAD
+    protected MP_CameraHold CamHold;
+    
+    protected GameObject floor = GameObject.Find("floor");
+    protected Vector3 newPos;
+    protected GameObject SHRampOne;
+    protected GameObject SHRampTwo;
+    protected GameObject SHRampThree;
 
-    //speed at which the player changes lanes
-    [SerializeField] float speed;
 
-    //used to change the player's height(changing lanes)
-    Vector3 curPos;
+=======
+    
+    //gets the floor object which contains all of the visual parts of the track
+    protected GameObject floor = GameObject.Find("floor");
+    //the position to move to when used
+    protected Vector3 newPos;
+    //gets the three small half ramps on the track, can be added or reduced for each track
+    protected GameObject SHRampOne;
+    protected GameObject SHRampTwo;
+    protected GameObject SHRampThree;
 
-    //stops the state change from being called back to back
-    [SerializeField] float timer = 0.2f;
-    [SerializeField] float timePassed;
-    //secondary timer for when you crash
-    [SerializeField] float crashTimer;
+    //used in states to have references set
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+    public override void Enter()
+    {
+        lValues = GetMachine<MP_ChangeLanes>().GetComponent<MP_LaneValues>();
+        Accel = GetMachine<MP_ChangeLanes>().GetComponent<MP_Boost_Accel>();
+        Control = GetMachine<MP_ChangeLanes>().GetComponent<MP_Controls>();
+        Heating = GetMachine<MP_ChangeLanes>().GetComponent<MP_Overheat>();
+        Crashing = GetMachine<MP_ChangeLanes>().GetComponent<MP_Crash>();
+<<<<<<< HEAD
+        CamHold = GetMachine<MP_ChangeLanes>().GetComponent<MP_CameraHold>();
+        
+        SHRampOne = GameObject.Find("SHR");
+        SHRampTwo = GameObject.Find("SHR1");
+        SHRampThree = GameObject.Find("SHR2");
+=======
+        
+        //finds the individual ramp colliders by name
+        SHRampOne = GameObject.Find("SHR");
+        SHRampTwo = GameObject.Find("SHR1");
+        SHRampThree = GameObject.Find("SHR2");
+        //sets the timepassed to 0 on the script referenced
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+        lValues.ResetTimer();
 
-    //checks if the player needs to go to the lane above four for overheating or crashing
-    bool needTopLane = false;
 
-    //accessing scripts
-    MP_Crash Crashing;
-    MP_Controls Controls;
-    MP_Acceleration Accel;
-    MP_GroundControl GroundCon;
-
-    // Use this for initialization
-    void Start() {
-        //adding the four states to the dictionary
-        fsm.Add(LaneStates.ONE, new Action(StateOne));
-        fsm.Add(LaneStates.TWO, new Action(StateTwo));
-        fsm.Add(LaneStates.THREE, new Action(StateThree));
-        fsm.Add(LaneStates.FOUR, new Action(StateFour));
-        fsm.Add(LaneStates.RECLANE, new Action(StateRec));
-        SetState(LaneStates.ONE);
-
-        curPos = transform.position;
-
-        Crashing = GetComponent<MP_Crash>();
-        Controls = GetComponent<MP_Controls>();
-        Accel = GetComponent<MP_Acceleration>();
-        GroundCon = GetComponent<MP_GroundControl>();
     }
 
-    // Update is called once per frame
-    void Update() {
-        //continues to call current state every frame
-        fsm[curState].Invoke();
-        //sets the current position every frame
-        //transform.SetPositionAndRotation(curPos, transform.rotation);
-
-        transform.position = Vector3.Lerp(transform.position, curPos, speed * Time.deltaTime);
-
-        //timer
-        timePassed += Time.deltaTime;
+    public override void Execute()
+    {
+<<<<<<< HEAD
+        floor.transform.position = Vector3.Lerp(floor.transform.position, newPos, lValues.GetSpeed() * Time.deltaTime);
 
         //checks if player has crashed OR overheated
-        if (needTopLane)
+        if (lValues.GetNeedToplane())
         {
             //slowly moves player to the recovery lane
-            if (timePassed > timer && curState != LaneStates.RECLANE)
+=======
+        //moves the floor to whatever is set as newPos in each state, simulates a change in lanes
+        floor.transform.position = Vector3.Lerp(floor.transform.position, newPos, lValues.GetSpeed() * Time.deltaTime);
+        //checks if player has crashed OR overheated
+        if (lValues.GetNeedToplane())
+        {
+            //if timer allows it then you move to the recovery lane
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+            if (lValues.GetTimePassed() > lValues.GetTimer() && !machine.IsCurrentState<RecLane>())
             {
-                //disables player input, it needs both disabled for some reason
-                Controls.enabled = false;
-                Accel.enabled = false;
-                
-                //looping timer and state change
-                timePassed = 0;
-                curState++;
-                
+                machine.ChangeState<RecLane>();
             }
         }
-        
-    }
-
-    //used to set the timer to the crash time for a wheelie
-    public void WheelieCrash()
-    {
-        crashTimer = GroundCon.GetWheelieTime();
-    }
-
-    //used by MP_Crash to speed up the timer during a crash
-    public void SpeedUpCrashTime()
-    {
-        timePassed = timePassed + Crashing.GetSpeedUpTime();
-    }
-
-    //toggles boolean
-    public void ChangeNeedTopLane()
-    {
-        needTopLane = !needTopLane;
-    }
-
-    //for checking true or false in other scripts
-    public bool GetNeedTopLane()
-    {
-        return needTopLane;
-    }
-
-    //called in controls, moves the player up a lane
-    public void MoveUp()
-    {
-        //prevents lane from going above four
-        //moves lane up one
-        if(curState != LaneStates.FOUR && timePassed > timer)
-        {
-            //resetting timer then switching states
-            timePassed = 0;
-            curState++;
-            
-        }
-        
-    }
-
-    public void MoveDown()
-    {
-        //prevents lane from going below one
-        //moves lane down one
-       if(curState != LaneStates.ONE && timePassed > timer)
-        {
-            //resetting timer then switching states
-            timePassed = 0;
-            curState--;
-            
-        }
-    }
-
-    //sets the height for each lane
-    void StateOne()
-    {
-        curPos = new Vector3(-32.984f, heightOne, -2);
-        
-    }
-
-    void StateTwo()
-    {
-        curPos = new Vector3(-32.984f, heightTwo, -2);
-       
-    }
-    
-    void StateThree()
-    {
-        curPos = new Vector3(-32.984f, heightThree, -2);
-      
-    }
-
-    void StateFour()
-    {
-        curPos = new Vector3(-32.984f, heightFour, -2);
-      
-    }
-
-    void StateRec()
-    {
-        curPos = new Vector3(-32.984f, heightRec, -2);
-
-        //insert if check for overheating
-        /*if(isOverheating){
-         * if(!overheating{
-         * curState = LaneStates.FOUR;
-         * }
-         * }
-         */
-        //checking if the reason for going to this state if for crashing
-        if (Crashing.GetIsCrashed())
-        {
-            //keeps player in recovery lane for set amount of time
-            if(timePassed > crashTimer)
-            {
-                //resets timer, toggles isCrashed, changes lane to the top lane, reenables input
-                timePassed = 0;
-                Crashing.ChangeIsCrashed();
-                curState = LaneStates.FOUR;
-                Controls.enabled = true;
-                Accel.enabled = true;
-            }
-        }
-    }
-   
-    void SetState(LaneStates newState)
-    {
-        curState = newState;
     }
 }
+
+public class LaneOne : MP_ChangeLanesState
+{
+ 
+    public override void Enter() {
+<<<<<<< HEAD
+        base.Enter();
+=======
+        //calls the enter that sets up the references and resets the timer
+        base.Enter();
+        //sets the newPos for lane one
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+        newPos = new Vector3(29.7f, lValues.GetHeightOne(), 2.47f);
+        
+        Debug.Log("entered lane one");
+    }
+   
+    public override void Execute()
+    {
+<<<<<<< HEAD
+        
+        base.Execute();
+       
+        
+        if (Input.GetKey(KeyCode.W) && lValues.GetTimePassed() > lValues.GetTimer())
+        {
+   
+=======
+        //calls the execute set up in the changelanesstate
+        base.Execute();
+       
+        //checks for the Up directional and the timer to be complete(prevents lane skipping), which moves the lane up one
+        if (Input.GetKey(KeyCode.W) && lValues.GetTimePassed() > lValues.GetTimer())
+        {
+            
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+            machine.ChangeState<LaneTwo>();
+
+        }
+        
+        
+    }
+
+    
+
+    public override void Exit() { }
+   
+}
+
+public class LaneTwo : MP_ChangeLanesState
+{
+    
+    public override void Enter()
+    {
+        base.Enter();
+<<<<<<< HEAD
+=======
+        //sets the newPos to lane two
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+        newPos = new Vector3(29.7f, lValues.GetHeightTwo(), 2.47f);
+        
+        Debug.Log("entered lane two");
+    }
+
+    public override void Execute()
+    {
+        base.Execute();
+<<<<<<< HEAD
+        SHRampOne.GetComponent<BoxCollider>().enabled = false;
+        SHRampTwo.GetComponent<BoxCollider>().enabled = false;
+        SHRampThree.GetComponent<BoxCollider>().enabled = false;
+        if (Input.GetKey(KeyCode.W) && lValues.GetTimePassed() > lValues.GetTimer())
+        {
+    
+=======
+        //disables the small half ramp colliders upon entering this lane as the ramp only takes up the third and fourth lane
+        SHRampOne.GetComponent<BoxCollider>().enabled = false;
+        SHRampTwo.GetComponent<BoxCollider>().enabled = false;
+        SHRampThree.GetComponent<BoxCollider>().enabled = false;
+        //two different inputs can happen in this lane, checks if you want to increase or decrease which lane you are in
+        if (Input.GetKey(KeyCode.W) && lValues.GetTimePassed() > lValues.GetTimer())
+        {
+
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+            machine.ChangeState<LaneThree>();
+
+        }
+        if (Input.GetKey(KeyCode.S) && lValues.GetTimePassed() > lValues.GetTimer())
+        {
+<<<<<<< HEAD
+            
+=======
+
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+            machine.ChangeState<LaneOne>();
+
+        }
+    }
+
+
+    public override void Exit()
+    {
+
+    }
+
+}
+
+public class LaneThree : MP_ChangeLanesState
+{
+    public override void Enter()
+    {
+<<<<<<< HEAD
+
+        base.Enter();
+=======
+        base.Enter();
+        //sets the newPos to lane three
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+        newPos = new Vector3(29.7f, lValues.GetHeightThree(), 2.47f);
+        
+        Debug.Log("entered lane three");
+    }
+
+    public override void Execute()
+    {
+        base.Execute();
+<<<<<<< HEAD
+        SHRampOne.GetComponent<BoxCollider>().enabled = true;
+        SHRampTwo.GetComponent<BoxCollider>().enabled = true;
+        SHRampThree.GetComponent<BoxCollider>().enabled = true;
+        if (Input.GetKey(KeyCode.W) && lValues.GetTimePassed() > lValues.GetTimer())
+        {
+           
+=======
+        //enables the colliders for the small half ramps upon entering and being in the third lane, also works for lane four
+        SHRampOne.GetComponent<BoxCollider>().enabled = true;
+        SHRampTwo.GetComponent<BoxCollider>().enabled = true;
+        SHRampThree.GetComponent<BoxCollider>().enabled = true;
+        //checks for lane up or down
+        if (Input.GetKey(KeyCode.W) && lValues.GetTimePassed() > lValues.GetTimer())
+        {
+
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+            machine.ChangeState<LaneFour>();
+
+        }
+        if (Input.GetKey(KeyCode.S) && lValues.GetTimePassed() > lValues.GetTimer())
+        {
+<<<<<<< HEAD
+           
+=======
+
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+            machine.ChangeState<LaneTwo>();
+
+        }
+    }
+
+    
+    public override void Exit()
+    {
+
+    }
+}
+
+public class LaneFour : MP_ChangeLanesState
+{
+    public override void Enter()
+    {
+        base.Enter();
+<<<<<<< HEAD
+=======
+        //sets newPos to lane four
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+        newPos = new Vector3(29.7f, lValues.GetHeightFour(), 2.47f);
+        
+        Debug.Log("entered lane four");
+    }
+
+    public override void Execute()
+    {
+        base.Execute();
+<<<<<<< HEAD
+        if (Input.GetKey(KeyCode.S) && lValues.GetTimePassed() >lValues.GetTimer() )
+        {
+       
+=======
+        //only checks for lane down as you can't go above four
+        if (Input.GetKey(KeyCode.S) && lValues.GetTimePassed() >lValues.GetTimer() )
+        {
+
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+            machine.ChangeState<LaneThree>();
+
+        }
+    }
+    public override void Exit()
+    {
+       
+    }
+}
+
+public class RecLane : MP_ChangeLanesState
+{
+    public override void Enter()
+    {
+        base.Enter();
+<<<<<<< HEAD
+        Accel.ResetSpeed();
+        newPos = new Vector3(29.7f, lValues.GetRecHeight(), 2.47f);
+=======
+        //sets the player's speed to 0
+        Accel.ResetSpeed();
+        //sets newPos to the recovery lane
+        newPos = new Vector3(29.7f, lValues.GetRecHeight(), 2.47f);
+        
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+        Debug.Log("entered lane rec");
+    }
+
+    public override void Execute()
+    {
+<<<<<<< HEAD
+       
+=======
+       //toggles the ability to accelerate, boost and rotate to false
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+        if (Control.GetCanAccel())
+        {
+            Control.ChangeCanAccel();
+
+        }
+        if (Control.GetCanBoost())
+        {
+            Control.ChangeCanBoost();
+        }
+        
+        if (Control.GetCanRot())
+        {
+            Control.ChangeCanRot();
+        }
+
+<<<<<<< HEAD
+        floor.transform.position = Vector3.Lerp(floor.transform.position, newPos, lValues.GetSpeed() * Time.deltaTime);
+
+        if (Heating.GetIsOverheated())
+        {
+            if(lValues.GetTimePassed() > lValues.GetCrashTimer())
+            {
+=======
+        //moves the floor so the player is in the recovery lane
+        floor.transform.position = Vector3.Lerp(floor.transform.position, newPos, lValues.GetSpeed() * Time.deltaTime);
+
+        //if you are overheated
+        if (Heating.GetIsOverheated())
+        {
+            //and the over heated timer is done
+            if(lValues.GetTimePassed() > lValues.GetCrashTimer())
+            {
+                //set player to not overheating and change lanes to the top lane
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+                Heating.ChangeIsOverheated();
+                machine.ChangeState<LaneFour>();
+            }
+        }
+<<<<<<< HEAD
+        if (Crashing.GetIsCrashed())
+        {
+            if (lValues.GetTimePassed() > lValues.GetCrashTimer())
+            {
+                Crashing.ChangeIsCrashed();
+                machine.ChangeState<LaneFour>();
+            }
+        }
+        if (Crashing.GetIsBRotCrashed())
+        {
+            if (lValues.GetTimePassed() > lValues.GetCrashTimer())
+            {
+                Crashing.ChangeIsBRotCrashed();
+                machine.ChangeState<LaneFour>();
+            }
+        }
+        if (Crashing.GetIsFRotCrashed())
+        {
+            if(lValues.GetTimePassed() > lValues.GetCrashTimer())
+            {
+                Crashing.ChangeIsFRotCrashed();
+                machine.ChangeState<LaneFour>();
+=======
+        //if you have crashed from a wheelie
+        if (Crashing.GetIsCrashed())
+        {
+            //and the timer for crashing from a wheelie is done
+            if (lValues.GetTimePassed() > lValues.GetCrashTimer())
+            {
+                //set player to not crashed from a wheelie and change lanes to the top lane
+                Crashing.ChangeIsCrashed();
+                
+                machine.ChangeState<LaneFour>();
+            }
+        }
+        //checked for if you crashed from landing on the right side of a ramp while rotated back
+        //if (Crashing.GetIsBRotCrashed())
+        //{
+        //    if (lValues.GetTimePassed() > lValues.GetCrashTimer())
+        //    {
+        //        Crashing.ChangeIsBRotCrashed();
+                
+        //        machine.ChangeState<LaneFour>();
+        //    }
+        //}
+        //checks if you crashed from landing on the track while rotated forward
+        if (Crashing.GetIsFRotCrashed())
+        {
+            //if the timer for this type of crash is done
+            if(lValues.GetTimePassed() > lValues.GetCrashTimer())
+            {
+                //set no longer crashed and change lanes
+                Crashing.ChangeIsFRotCrashedFalse();
+                
+                machine.ChangeState<LaneFour>();
+                
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+            }
+        }
+    }
+
+    public override void Exit()
+    {
+<<<<<<< HEAD
+=======
+        //checks if the booleans in the controls script are false and turns them back on
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+        if (!Control.GetCanAccel())
+        {
+            Control.ChangeCanAccel();
+
+        }
+        if (!Control.GetCanBoost())
+        {
+            Control.ChangeCanBoost();
+        }
+        if (!Control.GetCanRot())
+        {
+            Control.ChangeCanRot();
+        }
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 3d6ed963f533b44d17c0579c8f7804359aea14ae
+    }
+
+}
+
