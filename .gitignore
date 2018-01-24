@@ -36,3 +36,6 @@ sysinfo.txt
 Excitebike/Library/AnnotationManager
 Excitebike/Library/assetDatabase3
 Excitebike/Library/metadata/00/0000000000000000a000000000000000
+*.mat
+*.png
+*.prefab

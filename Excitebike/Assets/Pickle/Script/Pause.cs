@@ -18,18 +18,22 @@ public class Pause : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        if (pause && Input.GetKeyDown(KeyCode.Return))
+        //if you hit enter while paused
+        if (pause && Input.GetKeyDown(KeyCode.Return) && pause)
         {
+            // turn paused off and turn controls on
             pause = false;
             control.enabled = true;
             accel.enabled = true;
-            
         }
+        //if you hit enter while not paused
         else if (Input.GetKeyDown(KeyCode.Return) && !pause)
         {
+            //turn paused on and disable controls
             pause = true;
             control.enabled = false;
             accel.enabled = false;
+            
         }
 
     }
