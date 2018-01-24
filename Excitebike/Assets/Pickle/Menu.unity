@@ -399,6 +399,7 @@ MonoBehaviour:
   BeepSelect: {fileID: 8300000, guid: 5ff1988ce14a9344798d3a43a1875835, type: 3}
   RaceIntro: {fileID: 8300000, guid: 206874a9ec062be428776b28a57a0d46, type: 3}
   ResultSound: {fileID: 8300000, guid: 2ebb07eb27a1b79498ae5b97f269e50e, type: 3}
+  ErrorSound: {fileID: 8300000, guid: 60d50a6ce380e494eb73a9a1c1b054b6, type: 3}
   BestTime: {fileID: 941459003}
   PTime: {fileID: 1627322513}
   TrackTime: {fileID: 1296375066}
@@ -495,6 +496,48 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!1 &910382994
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 910382995}
+  - component: {fileID: 910382996}
+  m_Layer: 0
+  m_Name: TimeStuff
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &910382995
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 910382994}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &910382996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 910382994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2c90826fa1ca34ba3c1d17af25a00f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BestTime: 0
+  YourTime: 0
 --- !u!1 &941459001
 GameObject:
   m_ObjectHideFlags: 0

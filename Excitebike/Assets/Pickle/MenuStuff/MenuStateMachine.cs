@@ -1,4 +1,3 @@
-
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -7,16 +6,27 @@ using UnityEngine.UI;
 using UnityEngine;
 
 //"Script by Brian Dang"
+// This Script handles ALL Menu-based functions.Each State is a selection on the menus, and are organized in relation.This Script also handles the result screen at the end of a race.
+// Currently, the script handles 
+// - The Title Screen
+// - The Design Menu (Limited Funcionallity)
+// - The TraCK Selection (Only one Track is playable)
+// - Result Screen (Incomplete, but functional)
+// - Sound and Music related to the above
+//
+// This Script requires MenuStuff to function correctly, as it holds all the sounds, sprites, and text to the menu.
+
+
 
 public class MenuStateMachine : MonoBehaviour {
 
     private MenuStuff source;
     private Dictionary<MenuState, Action> menu = new Dictionary<MenuState, Action>();
     private MenuState curState = MenuState.SELECT1;
-    private bool SoloOn;
+    private bool SoloOn; //Toggle Solo/AI Race
     public float time;
-    private bool TitleDone = false;
-    public AudioSource audiosource;
+    private bool TitleDone = false; //Check for Title Music Playing
+    public AudioSource audiosource; //All Sounds use this
 
     enum MenuState
     {
@@ -43,8 +53,8 @@ public class MenuStateMachine : MonoBehaviour {
         NUM_STATES
     }
 
-	// Use this for initialization
-	void Start () {
+
+    void Start () {
         menu.Add(MenuState.SELECT1, new Action(SelectionOne));
         menu.Add(MenuState.SELECT2, new Action(SelectionTwo));
         menu.Add(MenuState.SELECT3, new Action(SelectionThree));
@@ -77,15 +87,41 @@ public class MenuStateMachine : MonoBehaviour {
         source.BestTime.GetComponent<Text>().enabled = false;
         source.PTime.GetComponent<Text>().enabled = false;
         source.TrackTime.GetComponent<Text>().enabled = false;
+
+        if (PlayerPrefs.GetInt("CompleteRace", 1) == 1) //Check for finishing a race.
+        {
+            SetState(MenuState.RESULT);
+            audiosource.Stop();
+            audiosource.clip = source.ResultSound;
+            audiosource.Play();
+            time = 0.0f;
+            PlayerPrefs.SetInt("CompleteRace", 0);
+        }
+
+        else if (PlayerPrefs.GetInt("FirstGame", 0) == 0)
+        {
+            SetState(MenuState.SELECT1);
+            GameObject.Find("MenuImage").GetComponent<Image>().sprite = source.StartMenu1;
+            audiosource.clip = source.TitleTrack[UnityEngine.Random.Range(0, source.TitleTrack.Length)];
+            audiosource.Play();
+            PlayerPrefs.SetInt("FirstGame", 1);
+            string timeText = string.Format("{0:D2}:{1:D2}:{2:D2}", 01 , 16, 00);
+            PlayerPrefs.SetString("BestTime", timeText);
+        }
+
+        else //If just starting the game up, this will run.
+        {
+            SetState(MenuState.SELECT1);
+            GameObject.Find("MenuImage").GetComponent<Image>().sprite = source.StartMenu1;
+            audiosource.clip = source.TitleTrack[UnityEngine.Random.Range(0, source.TitleTrack.Length)];
+            audiosource.Play();
+        }
         
-        SetState(MenuState.SELECT1);
-        GameObject.Find("MenuImage").GetComponent<Image>().sprite = source.StartMenu1;
-        audiosource.clip = source.TitleTrack[UnityEngine.Random.Range(0, source.TitleTrack.Length)];
-        audiosource.Play();
+       
         
         
     }
-    void Beep()
+    void Beep() //Icon Beeping while navigating menus. The beeps start playing after the title/track selection music ends.
     {
         if (!TitleDone)
         {
@@ -100,8 +136,16 @@ public class MenuStateMachine : MonoBehaviour {
             audiosource.Play();
         }
     }
+    void ErrorSound() //For Menu selections that don't have anything leading to them. Use this as a placeholder until all the menu selections are implemented.
+    {
+        audiosource.Stop();
+        audiosource.clip = source.ErrorSound;
+        audiosource.Play();
+        Debug.Log("Not available!");
+    }
 
     //Title Screen
+    //When Starting up, the Title Theme will play one of its four variations.
     void SelectionOne()
     {
         GameObject.Find("MenuImage").GetComponent<Image>().sprite = source.StartMenu1;
@@ -184,6 +228,7 @@ public class MenuStateMachine : MonoBehaviour {
 
 
     //Solo Race + Multi Race
+    //Depending if Solo ON is true or not, depends if the player is doing Solo Race or Multiplayer Race. Each track is set up to load levels when selected.
     void SoloSelect1()
     {
         GameObject.Find("MenuImage").GetComponent<Image>().sprite = source.SoloMenu1;
@@ -203,7 +248,7 @@ public class MenuStateMachine : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.Return) && !SoloOn)
         {
-            SceneManager.LoadScene("");
+            SceneManager.LoadScene("scenefinal");
         }
     }
 
@@ -223,11 +268,11 @@ public class MenuStateMachine : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Return) && SoloOn)
         {
-            SceneManager.LoadScene("");
+            SceneManager.LoadScene("scenefinal");
         }
         else if (Input.GetKeyDown(KeyCode.Return) && !SoloOn)
         {
-            SceneManager.LoadScene("");
+            SceneManager.LoadScene("scenefinal");
         }
     }
 
@@ -247,11 +292,11 @@ public class MenuStateMachine : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Return) && SoloOn)
         {
-            SceneManager.LoadScene("");
+            SceneManager.LoadScene("scenefinal");
         }
         else if (Input.GetKeyDown(KeyCode.Return) && !SoloOn)
         {
-            SceneManager.LoadScene("");
+            SceneManager.LoadScene("scenefinal");
         }
     }
 
@@ -271,11 +316,11 @@ public class MenuStateMachine : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Return) && SoloOn)
         {
-            SceneManager.LoadScene("");
+            SceneManager.LoadScene("scenefinal");
         }
         else if (Input.GetKeyDown(KeyCode.Return) && !SoloOn)
         {
-            SceneManager.LoadScene("");
+            SceneManager.LoadScene("scenefinal");
         }
     }
 
@@ -295,16 +340,17 @@ public class MenuStateMachine : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Return) && SoloOn)
         {
-            SceneManager.LoadScene("");
+            SceneManager.LoadScene("scenefinal");
         }
         else if (Input.GetKeyDown(KeyCode.Return) && !SoloOn)
         {
-            SceneManager.LoadScene("");
+            SceneManager.LoadScene("scenefinal");
         }
     }
 
 
     //Design Menu
+    //Most features don't lead to anything. Once Design is finished, start implementing functionality here.
     void DesignSelect1()
     {
         GameObject.Find("MenuImage").GetComponent<Image>().sprite = source.DesignMenu1;
@@ -318,6 +364,11 @@ public class MenuStateMachine : MonoBehaviour {
         {
             SetState(MenuState.DESIGN6);
             Beep();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            ErrorSound();
         }
     }
 
@@ -335,6 +386,11 @@ public class MenuStateMachine : MonoBehaviour {
             SetState(MenuState.DESIGN1);
             Beep();
         }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            ErrorSound();
+        }
     }
 
     void DesignDesign()
@@ -350,6 +406,11 @@ public class MenuStateMachine : MonoBehaviour {
         {
             SetState(MenuState.DESIGN2);
             Beep();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            ErrorSound();
         }
     }
 
@@ -367,6 +428,11 @@ public class MenuStateMachine : MonoBehaviour {
             SetState(MenuState.DESIGN3);
             Beep();
         }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            ErrorSound();
+        }
     }
 
     void DesignLoad()
@@ -382,6 +448,11 @@ public class MenuStateMachine : MonoBehaviour {
         {
             SetState(MenuState.DESIGN4);
             Beep();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            ErrorSound();
         }
     }
 
@@ -408,17 +479,21 @@ public class MenuStateMachine : MonoBehaviour {
 
 
     //Result Screen, Press "J" on Selection A to show an example Result Screen.
+    //The Best Time doesn't have a default time, and only counts for all tracks. Functions for all tracks are needed to be implemented.
+    //The TrackResult plays a litte after the first result screen. It only shows for Track 1. Add more tracks later.
     void Results()
     {
         GameObject.Find("MenuImage").GetComponent<Image>().sprite = source.ResultScreen;
         source.BestTime.GetComponent<Text>().enabled = true;
         source.PTime.GetComponent<Text>().enabled = true;
-        string minutes = ((int)(Time.time - Time.time) / 60).ToString();
-        string seconds = (Time.time - Time.time % 60).ToString("#0000");
-        source.BestTime.text = minutes + ":" + seconds;
+        source.BestTime.text = PlayerPrefs.GetString("BestTime");
+        source.PTime.text = PlayerPrefs.GetString("RaceTime");
 
         if (time > 6.0f)
         {
+            source.BestTime.text = source.PTime.text;
+
+            PlayerPrefs.SetString("BestTime", source.BestTime.text);
             SetState(MenuState.POSTRESULT);
         }
 
@@ -430,6 +505,7 @@ public class MenuStateMachine : MonoBehaviour {
         source.PTime.GetComponent<Text>().enabled = false;
         source.TrackTime.GetComponent<Text>().enabled = true;
         GameObject.Find("MenuImage").GetComponent<Image>().sprite = source.TrackResult;
+        source.TrackTime.text = source.BestTime.text;
 
         if(time > 12.0f)
         {
@@ -445,9 +521,6 @@ public class MenuStateMachine : MonoBehaviour {
 	
 	void Update () {
         menu[curState].Invoke();
-        time += Time.deltaTime;
-
-
+        time += Time.deltaTime; //Time is kept here.
     }
 }
-

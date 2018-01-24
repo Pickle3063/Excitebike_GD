@@ -1,7 +1,7 @@
-
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System;
 using UnityEngine;
 
 //"Script by Brian Dang"
@@ -34,16 +34,16 @@ public class MenuStuff : MonoBehaviour {
     public AudioClip BeepSelect;
     public AudioClip RaceIntro;
     public AudioClip ResultSound;
+    public AudioClip ErrorSound;
 
     public Text BestTime; // Text for Times shown in the result screens
     public Text PTime;
     public Text TrackTime;
 
-
     //This Script is for storing Menu Sprites.
+    //If there is a change needed to the MenuStateMachine, simply add what you need here.
 	
 	void Start () {
-        //GameObject.Find("MenuImage").GetComponent<Image>().sprite = StartMenuNull;
 
     }
 	
@@ -52,4 +52,3 @@ public class MenuStuff : MonoBehaviour {
 		
 	}
 }
-
